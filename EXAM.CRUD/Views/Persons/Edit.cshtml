@@ -1,0 +1,82 @@
+@model EXAM.CRUD.Models.Persons
+
+@{
+    ViewData["Title"] = "Edit Person";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2>Edit Person</h2>
+            <hr />
+
+            <form asp-action="Update" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="firstName" class="form-label"></label>
+                    <input asp-for="firstName" class="form-control" />
+                    <span asp-validation-for="firstName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="middleName" class="form-label"></label>
+                    <input asp-for="middleName" class="form-control" />
+                    <span asp-validation-for="middleName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="lastName" class="form-label"></label>
+                    <input asp-for="lastName" class="form-control" />
+                    <span asp-validation-for="lastName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Gender" class="form-label"></label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="">-- Select Gender --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="contactNumber" class="form-label"></label>
+                    <input asp-for="contactNumber" type="tel" class="form-control" />
+                    <span asp-validation-for="contactNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="birthDate" class="form-label"></label>
+                    <input asp-for="birthDate" type="date" class="form-control" />
+                    <span asp-validation-for="birthDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Occupation" class="form-label"></label>
+                    <input asp-for="Occupation" class="form-control" />
+                    <span asp-validation-for="Occupation" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

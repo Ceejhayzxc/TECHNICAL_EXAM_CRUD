@@ -1,0 +1,142 @@
+@model IEnumerable<EXAM.CRUD.Models.Persons>
+
+@{
+    ViewData["Title"] = "Index";
+    var showCreateModal = (ViewData["ShowCreateModal"] as bool?) ?? false;
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Message"]
+    </div>
+}
+
+<h1>Persons table</h1>
+
+<p>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+        <i class="bi bi-plus-lg"></i> Create New
+    </button>
+</p>
+<div>
+    <form asp-aciton="Index" method="get">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" value="@Context.Request.Query["search"]" placeholder="Search persons..."/>
+            <button type="submit" class="btn btn-success">Search</button>
+        </div>
+    </form>
+</div>
+
+<partial name="_Create" model="new EXAM.CRUD.Models.Persons()" />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.firstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.middleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.lastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contactNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.birthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Occupation)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.middleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.lastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.contactNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.birthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Occupation)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">
+                        Update</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#deleteModal" 
+                        onclick="setDeletePersonId(@item.Id, '@item.firstName @item.lastName')">
+                        Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="personName"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" style="display: inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (showCreateModal)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalEl = document.getElementById('createModal');
+            var modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        });
+    </script>
+}
+
+<script>
+    function setDeletePersonId(id, personName) {
+        document.getElementById('personName').textContent = personName;
+        document.getElementById('deleteForm').action = `/Persons/Delete?id=${id}`;
+    }
+</script>
